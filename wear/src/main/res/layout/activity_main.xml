@@ -9,17 +9,22 @@
     tools:context=".MainActivity"
     tools:deviceIds="wear">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/heartRateLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world" />
+            android:text="@string/heartRateLabelTextView" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/heartRateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heartRateTextView" />
+    </LinearLayout>
+
 </androidx.wear.widget.BoxInsetLayout>
