@@ -1,6 +1,5 @@
 package com.github.frozentear7.pulsealarm;
 
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,16 +8,6 @@ import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.widget.TextView;
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.android.gms.wearable.DataClient;
-import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
-
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends WearableActivity implements SensorEventListener {
     private static final String TAG = "MainActivity";
@@ -36,8 +25,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         heartRateTextView = findViewById(R.id.heartRateTextView);
         heartRateTextView.setText("Test");
 
-        Thread thread = new Thread(new SendHeartRateRunnable(getApplicationContext()));
-        thread.start();
+        new Thread(new SendHeartRateRunnable(getApplicationContext(), 2)).start();
+        new Thread(new SendHeartRateRunnable(getApplicationContext(), 1)).start();
+        new Thread(new SendHeartRateRunnable(getApplicationContext(), 12)).start();
+        new Thread(new SendHeartRateRunnable(getApplicationContext(), 123)).start();
 
         mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         assert mSensorManager != null;
@@ -46,23 +37,27 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         Log.i(TAG, "LISTENER REGISTERED.");
 
         mSensorManager.registerListener(sensorEventListener, mHeartRateSensor, SensorManager.SENSOR_DELAY_FASTEST);
+
     }
 
+    @Override
     public void onResume() {
         super.onResume();
     }
 
+    @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-            String msg = "" + (int) event.values[0];
-            heartRateTextView.setText(msg);
-            Log.d(TAG, msg);
-            System.out.println(msg);
+            int heartRate = (int) event.values[0];
+            heartRateTextView.setText(heartRate);
+            Log.d(TAG, String.valueOf(heartRate));
+            new Thread(new SendHeartRateRunnable(getApplicationContext(), heartRate)).start();
         } else {
             Log.d(TAG, "Unknown sensor type");
         }
     }
 
+    @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
     }

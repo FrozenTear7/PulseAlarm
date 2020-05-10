@@ -23,8 +23,7 @@
         <TextView
             android:id="@+id/heartRateTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/heartRateTextView" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </androidx.wear.widget.BoxInsetLayout>

@@ -3,6 +3,7 @@ package com.github.frozentear7.pulsealarm;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.wearable.DataClient;
@@ -20,39 +21,44 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
 
     private static final String HEARTRATE_PATH = "/heartrate";
     private static final String HEARTRATE_KEY = "heartrate";
-    private int heartRate = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toast.makeText(this, "Hello BRUH", Toast.LENGTH_SHORT).show();
+        Wearable.getDataClient(this).addListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Wearable.getDataClient(this).addListener(this);
+//        Wearable.getDataClient(this).addListener(this);
+        Log.i(TAG, "Resume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Wearable.getDataClient(this).removeListener(this);
+//        Wearable.getDataClient(this).removeListener(this);
+        Log.i(TAG, "Pause");
     }
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
+        Log.i(TAG, "Data change event");
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
-
                 DataItem item = event.getDataItem();
                 if (Objects.requireNonNull(item.getUri().getPath()).compareTo(HEARTRATE_PATH) == 0) {
                     DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                    Log.i(TAG, "Current heart rate: " + dataMap.getInt(HEARTRATE_KEY));
+                    int heartRate = dataMap.getInt(HEARTRATE_KEY);
+                    Log.i(TAG, "Current heart rate: " + heartRate);
+                    TextView heartRateValueTextView = findViewById(R.id.heartRateValue);
+                    heartRateValueTextView.setText(heartRate);
                 }
             } else {
-                event.getType();// DataItem deleted
+                event.getType(); // DataItem deleted
             }
         }
     }

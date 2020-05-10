@@ -14,24 +14,22 @@ import java.util.concurrent.ExecutionException;
 
 public class SendHeartRateRunnable implements Runnable {
     private Context applicationContext;
+    private int heartRate;
 
     private static final String TAG = "SendHeartRateRunnable";
 
     private static final String HEARTRATE_PATH = "/heartrate";
     private static final String HEARTRATE_KEY = "heartrate";
 
-    SendHeartRateRunnable(Context applicationContext) {
+    SendHeartRateRunnable(Context applicationContext, int heartRate) {
         this.applicationContext = applicationContext;
-        Log.i(TAG, "CONSTRUCTOR");
+        this.heartRate = heartRate;
     }
 
     @Override
     public void run() {
-        Log.i(TAG, "STARTING RUN");
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(HEARTRATE_PATH);
-        putDataMapRequest.getDataMap().putInt(HEARTRATE_KEY, 123); // Test value
-
-        Log.i(TAG, "Test int request");
+        putDataMapRequest.getDataMap().putInt(HEARTRATE_KEY, heartRate); // Test value
 
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
         request.setUrgent();
@@ -44,7 +42,6 @@ public class SendHeartRateRunnable implements Runnable {
             DataItem dataItem = Tasks.await(dataItemTask);
 
             Log.i(TAG, "DataItem saved: " + dataItem);
-
         } catch (ExecutionException exception) {
             Log.i(TAG, "Task failed: " + exception);
 
