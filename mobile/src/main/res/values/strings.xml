@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PulseAlarm</string>
+    <string name="currentHeartRateValue">0</string>
+    <string name="currentHeartRateLabel">Current heart rate:</string>
 </resources>

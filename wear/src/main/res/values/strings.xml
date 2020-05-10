@@ -2,4 +2,6 @@
     <string name="app_name">PulseAlarm</string>
     <string name="heartRateLabelTextView">"Current heart rate: "</string>
     <string name="heartRateTextView">0</string>
+    <string name="heartRateChannelName">heartRateChannel</string>
+    <string name="heartRateChannelDescription">Notifications for pulse alarm</string>
 </resources>
