@@ -1,7 +1,6 @@
 package com.github.frozentear7.pulsealarm;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -22,38 +21,34 @@ public class SendHeartRateRunnable implements Runnable {
     private static final String HEARTRATE_PATH = "/heartrate";
     private static final String HEARTRATE_KEY = "heartrate";
 
-    SendHeartRateRunnable(Context applicationContext, int heartRate) {
+    public SendHeartRateRunnable(Context applicationContext, int heartRate) {
         this.applicationContext = applicationContext;
         this.heartRate = heartRate;
     }
 
     @Override
     public void run() {
-        while(true) {
-            PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(HEARTRATE_PATH);
-            putDataMapRequest.getDataMap().putInt(HEARTRATE_KEY, heartRate++); // Test value
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(HEARTRATE_PATH);
+        putDataMapRequest.getDataMap().putInt(HEARTRATE_KEY, heartRate);
 
-            PutDataRequest request = putDataMapRequest.asPutDataRequest();
-            request.setUrgent();
+        PutDataRequest request = putDataMapRequest.asPutDataRequest();
+        request.setUrgent();
 
-            Task<DataItem> dataItemTask = Wearable.getDataClient(applicationContext).putDataItem(request);
+        Task<DataItem> dataItemTask = Wearable.getDataClient(applicationContext).putDataItem(request);
 
-            Log.i(TAG, "Created task for: " + heartRate);
+        Log.i(TAG, "Created task for: " + heartRate);
 
-            try {
-                // Block on a task and get the result synchronously (because this is on a background
-                // thread).
-                DataItem dataItem = Tasks.await(dataItemTask);
+        try {
+            // Block on a task and get the result synchronously (because this is on a background
+            // thread).
+            DataItem dataItem = Tasks.await(dataItemTask);
 
-                Log.i(TAG, "DataItem saved: " + dataItem);
-            } catch (ExecutionException exception) {
-                Log.i(TAG, "Task failed: " + exception);
+            Log.i(TAG, "DataItem saved: " + dataItem);
+        } catch (ExecutionException exception) {
+            Log.i(TAG, "Task failed: " + exception);
 
-            } catch (InterruptedException exception) {
-                Log.i(TAG, "Interrupt occurred: " + exception);
-            }
-
-            SystemClock.sleep(5000);
+        } catch (InterruptedException exception) {
+            Log.i(TAG, "Interrupt occurred: " + exception);
         }
     }
 }
