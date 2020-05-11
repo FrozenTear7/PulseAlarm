@@ -1,6 +1,7 @@
 package com.github.frozentear7.pulsealarm;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -28,25 +29,31 @@ public class SendHeartRateRunnable implements Runnable {
 
     @Override
     public void run() {
-        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(HEARTRATE_PATH);
-        putDataMapRequest.getDataMap().putInt(HEARTRATE_KEY, heartRate); // Test value
+        while(true) {
+            PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(HEARTRATE_PATH);
+            putDataMapRequest.getDataMap().putInt(HEARTRATE_KEY, heartRate++); // Test value
 
-        PutDataRequest request = putDataMapRequest.asPutDataRequest();
-        request.setUrgent();
+            PutDataRequest request = putDataMapRequest.asPutDataRequest();
+            request.setUrgent();
 
-        Task<DataItem> dataItemTask = Wearable.getDataClient(applicationContext).putDataItem(request);
+            Task<DataItem> dataItemTask = Wearable.getDataClient(applicationContext).putDataItem(request);
 
-        try {
-            // Block on a task and get the result synchronously (because this is on a background
-            // thread).
-            DataItem dataItem = Tasks.await(dataItemTask);
+            Log.i(TAG, "Created task for: " + heartRate);
 
-            Log.i(TAG, "DataItem saved: " + dataItem);
-        } catch (ExecutionException exception) {
-            Log.i(TAG, "Task failed: " + exception);
+            try {
+                // Block on a task and get the result synchronously (because this is on a background
+                // thread).
+                DataItem dataItem = Tasks.await(dataItemTask);
 
-        } catch (InterruptedException exception) {
-            Log.i(TAG, "Interrupt occurred: " + exception);
+                Log.i(TAG, "DataItem saved: " + dataItem);
+            } catch (ExecutionException exception) {
+                Log.i(TAG, "Task failed: " + exception);
+
+            } catch (InterruptedException exception) {
+                Log.i(TAG, "Interrupt occurred: " + exception);
+            }
+
+            SystemClock.sleep(5000);
         }
     }
 }

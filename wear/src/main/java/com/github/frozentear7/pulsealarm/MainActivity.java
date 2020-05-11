@@ -26,9 +26,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         heartRateTextView.setText("Test");
 
         new Thread(new SendHeartRateRunnable(getApplicationContext(), 2)).start();
-        new Thread(new SendHeartRateRunnable(getApplicationContext(), 1)).start();
-        new Thread(new SendHeartRateRunnable(getApplicationContext(), 12)).start();
-        new Thread(new SendHeartRateRunnable(getApplicationContext(), 123)).start();
 
         mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         assert mSensorManager != null;
@@ -37,7 +34,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         Log.i(TAG, "LISTENER REGISTERED.");
 
         mSensorManager.registerListener(sensorEventListener, mHeartRateSensor, SensorManager.SENSOR_DELAY_FASTEST);
-
     }
 
     @Override

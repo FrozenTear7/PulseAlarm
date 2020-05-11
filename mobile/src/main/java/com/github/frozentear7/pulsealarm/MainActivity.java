@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
                     int heartRate = dataMap.getInt(HEARTRATE_KEY);
                     Log.i(TAG, "Current heart rate: " + heartRate);
                     TextView heartRateValueTextView = findViewById(R.id.heartRateValue);
-                    heartRateValueTextView.setText(heartRate);
+                    heartRateValueTextView.setText(String.valueOf(heartRate));
                 }
             } else {
                 event.getType(); // DataItem deleted
