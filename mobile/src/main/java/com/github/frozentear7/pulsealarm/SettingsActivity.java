@@ -1,8 +1,14 @@
 package com.github.frozentear7.pulsealarm;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -37,5 +43,30 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void saveOnClick(View view) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        EditText editTextHeartRateLower = findViewById(R.id.editTextHeartRateLower);
+        EditText editTextHeartRateUpper = findViewById(R.id.editTextHeartRateUpper);
+
+        try {
+            int prefLowerHeartRate = Integer.parseInt(editTextHeartRateLower.getText().toString());
+            int prefUpperHeartRate = Integer.parseInt(editTextHeartRateUpper.getText().toString());
+
+            if (prefLowerHeartRate < 0 || prefLowerHeartRate >= prefUpperHeartRate) {
+                Toast.makeText(this, "Please provide valid values: bigger than 0 and upper > lower", Toast.LENGTH_SHORT).show();
+            } else {
+                editor.putInt(getString(R.string.prefLowerHeartRate), prefLowerHeartRate);
+                editor.putInt(getString(R.string.prefUpperHeartRate), prefUpperHeartRate);
+                editor.apply();
+
+                finish();
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Please provide valid numeric values", Toast.LENGTH_SHORT).show();
+        }
     }
 }

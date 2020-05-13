@@ -79,6 +79,7 @@
                 android:id="@+id/saveSettingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="saveOnClick"
                 android:text="@string/saveSettingsButton" />
 
         </LinearLayout>

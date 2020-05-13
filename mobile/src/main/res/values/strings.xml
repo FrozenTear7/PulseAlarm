@@ -10,4 +10,8 @@
     <string name="mainTitle">Pulse Alarm</string>
     <string name="settingsTitle">Settings</string>
     <string name="settingsActivityLabel">Settings</string>
+
+    <string name="prefLowerHeartRate">prefLowerHeartRate</string>
+    <string name="prefUpperHeartRate">prefUpperHeartRate</string>
+
 </resources>

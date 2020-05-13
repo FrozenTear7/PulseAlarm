@@ -1,8 +1,11 @@
 package com.github.frozentear7.pulsealarm;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -23,24 +26,39 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
     private static final String HEARTRATE_PATH = "/heartrate";
     private static final String HEARTRATE_KEY = "heartrate";
 
+    int prefLowerHeartRate;
+    int prefUpperHeartRate;
+    SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Wearable.getDataClient(this).addListener(this);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefLowerHeartRate = sharedPref.getInt(getString(R.string.prefLowerHeartRate), 60);
+        prefUpperHeartRate = sharedPref.getInt(getString(R.string.prefUpperHeartRate), 140);
+
+        Log.i(TAG, "Lower heartRate: " + prefLowerHeartRate);
+        Log.i(TAG, "Upper heartRate: " + prefUpperHeartRate);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        Wearable.getDataClient(this).addListener(this);
         Log.i(TAG, "Resume");
+
+        prefLowerHeartRate = sharedPref.getInt(getString(R.string.prefLowerHeartRate), 60);
+        prefUpperHeartRate = sharedPref.getInt(getString(R.string.prefUpperHeartRate), 140);
+
+        Log.i(TAG, "Lower heartRate: " + prefLowerHeartRate);
+        Log.i(TAG, "Upper heartRate: " + prefUpperHeartRate);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        Wearable.getDataClient(this).removeListener(this);
         Log.i(TAG, "Pause");
     }
 
