@@ -4,7 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +36,7 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
     int prefLowerHeartRate;
     int prefUpperHeartRate;
     SharedPreferences sharedPref;
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +82,25 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
                     Log.i(TAG, "Current heart rate: " + heartRate);
                     TextView heartRateValueTextView = findViewById(R.id.heartRateValue);
                     heartRateValueTextView.setText(String.valueOf(heartRate));
+
+                    if (heartRate >= prefUpperHeartRate || heartRate <= prefLowerHeartRate) {
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        assert v != null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.EFFECT_HEAVY_CLICK));
+                        } else {
+                            v.vibrate(500);
+                        }
+
+                        Log.i(TAG, "HEART RATE CRITICAL");
+                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                        mp = MediaPlayer.create(this, alarmSound);
+
+                        // Conditions don't work
+                        if (!mp.isPlaying() && !mp.isLooping()){
+                            mp.start();
+                        }
+                    }
                 }
             } else {
                 event.getType(); // DataItem deleted

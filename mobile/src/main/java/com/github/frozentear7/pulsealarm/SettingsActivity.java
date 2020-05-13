@@ -17,6 +17,10 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
+    int prefLowerHeartRate;
+    int prefUpperHeartRate;
+    SharedPreferences sharedPref;
+
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,16 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefLowerHeartRate = sharedPref.getInt(getString(R.string.prefLowerHeartRate), 60);
+        prefUpperHeartRate = sharedPref.getInt(getString(R.string.prefUpperHeartRate), 140);
+
+        EditText editTextHeartRateLower = findViewById(R.id.editTextHeartRateLower);
+        EditText editTextHeartRateUpper = findViewById(R.id.editTextHeartRateUpper);
+
+        editTextHeartRateLower.setText(String.valueOf(prefLowerHeartRate));
+        editTextHeartRateUpper.setText(String.valueOf(prefUpperHeartRate));
     }
 
     @Override
