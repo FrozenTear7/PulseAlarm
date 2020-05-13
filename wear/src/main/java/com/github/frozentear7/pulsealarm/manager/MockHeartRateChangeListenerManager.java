@@ -6,7 +6,6 @@ import com.github.frozentear7.pulsealarm.listener.HeartRateChangeListener;
 import java.util.Random;
 
 public class MockHeartRateChangeListenerManager extends HeartRateChangeListenerManager {
-
     public MockHeartRateChangeListenerManager() {
         Thread updaterThread = new MockHeartRateChangeUpdater();
         updaterThread.start();

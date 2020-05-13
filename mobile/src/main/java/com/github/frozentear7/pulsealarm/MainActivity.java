@@ -1,6 +1,7 @@
 package com.github.frozentear7.pulsealarm;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.Objects;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 public class MainActivity extends Activity implements DataClient.OnDataChangedListener {
     private static final String TAG = "MainActivity";
 
@@ -26,8 +29,12 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toast.makeText(this, "Hello BRUH", Toast.LENGTH_SHORT).show();
+        TextView heartRateValueTextView = findViewById(R.id.heartRateValue);
+        heartRateValueTextView.setText(String.valueOf(123));
         Wearable.getDataClient(this).addListener(this);
+
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override

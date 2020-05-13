@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PulseAlarm</string>
-    <string name="currentHeartRateLabel">Current heart rate:</string>
+    <string name="currentHeartRateLabel">Current heart rate</string>
+
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="settingsHeartRateLower">Min heart rate</string>
+    <string name="settingsHeartRateUpper">Max heart rate</string>
+    <string name="saveSettingsButton">Save</string>
+    <string name="settingsTitle">Settings</string>
 </resources>
