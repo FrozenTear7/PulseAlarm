@@ -1,11 +1,7 @@
 package com.github.frozentear7.pulsealarm;
 
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 
 import androidx.annotation.RequiresApi;

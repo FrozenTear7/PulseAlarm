@@ -2,6 +2,7 @@ package com.github.frozentear7.pulsealarm;
 
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.frozentear7.pulsealarm.listener.LoggerHeartRateChangeListener;

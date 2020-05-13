@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.wearable.DataClient;
 import com.google.android.gms.wearable.DataEvent;
@@ -17,8 +17,6 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.Objects;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-
 public class MainActivity extends Activity implements DataClient.OnDataChangedListener {
     private static final String TAG = "MainActivity";
 
@@ -29,12 +27,7 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView heartRateValueTextView = findViewById(R.id.heartRateValue);
-        heartRateValueTextView.setText(String.valueOf(123));
         Wearable.getDataClient(this).addListener(this);
-
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -68,6 +61,11 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
                 event.getType(); // DataItem deleted
             }
         }
+    }
+
+    public void settingsOpen(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
 
