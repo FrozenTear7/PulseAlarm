@@ -50,6 +50,9 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
 
         Log.i(TAG, "Lower heartRate: " + prefLowerHeartRate);
         Log.i(TAG, "Upper heartRate: " + prefUpperHeartRate);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        mp = MediaPlayer.create(this, alarmSound);
     }
 
     @Override
@@ -93,11 +96,9 @@ public class MainActivity extends Activity implements DataClient.OnDataChangedLi
                         }
 
                         Log.i(TAG, "HEART RATE CRITICAL");
-                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                        mp = MediaPlayer.create(this, alarmSound);
 
-                        // Conditions don't work
-                        if (!mp.isPlaying() && !mp.isLooping()){
+
+                        if (!mp.isPlaying()) {
                             mp.start();
                         }
                     }
